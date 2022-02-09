@@ -8,11 +8,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.t6_iniciofg.fragements.FragmentDos;
 import com.example.t6_iniciofg.fragements.FragmentUno;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, FragmentUno.OnFragmentUnoListener {
 
     private Button botonF1, botonF2, botonComprobar;
     private FragmentManager fragmentManager;
@@ -94,5 +95,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         //Log.v("fragments", String.valueOf(getSupportFragmentManager()
         // .getBackStackEntryCount()));
+    }
+
+    @Override
+    public void onDataSelected(String data) {
+        //Toast.makeText(getApplicationContext(), "Dato comunicado "+data, Toast.LENGTH_SHORT).show();
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out);
+        fragmentTransaction.replace(R.id.sitio_fragments, FragmentDos.newInstance(data),"f2");
+        if (fragmentManager.findFragmentByTag("f2")==null){
+            fragmentTransaction.addToBackStack("f2");
+        }
+        fragmentTransaction.commit();
+
+        //FragmentDos.newInstance(data);
     }
 }
